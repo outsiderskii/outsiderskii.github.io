@@ -178,7 +178,7 @@ if (login === "outside") {
 
 /* ===== ТОЛЬКО ДВОЕ ===== */
 usersRef.once("value", snap => {
-  if (snap.numChildren() >= 2) {
+  if (snap.numChildren() >= 100) {
     alert("Эта комната только для двоих.");
     document.body.innerHTML = "";
   } else {
@@ -289,3 +289,4 @@ sceneRef.on("value", snap => {
 
 </body>
 </html>
+
