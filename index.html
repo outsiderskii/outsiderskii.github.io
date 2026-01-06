@@ -2,13 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Только мы</title>
+<title>outdev</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <style>
-/* ===== БАЗА ===== */
 body {
   margin: 0;
   height: 100vh;
@@ -20,7 +19,7 @@ body {
   overflow: hidden;
 }
 
-/* ===== ЧЁРНЫЕ СЕРДЕЧКИ ===== */
+/* 🖤 ФОН */
 body::after {
   content: "🖤 🖤 🖤 🖤 🖤 🖤 🖤 🖤";
   position: fixed;
@@ -34,7 +33,6 @@ body::after {
   animation: floatHearts 40s linear infinite;
   pointer-events: none;
 }
-
 @keyframes floatHearts {
   from { transform: translateY(0); }
   to   { transform: translateY(-200px); }
@@ -68,25 +66,13 @@ body::after {
 }
 .message { margin-bottom: 10px; }
 
-/* обычный ник */
 .name {
   color: #ffb3c6;
   font-weight: bold;
 }
-
-/* НЕОНОВЫЙ outside */
 .name.outside {
   color: #ff4fa3;
-  text-shadow:
-    0 0 5px #ff4fa3,
-    0 0 10px #ff4fa3,
-    0 0 20px #ff4fa3;
-  animation: neonPulse 2s ease-in-out infinite;
-}
-
-@keyframes neonPulse {
-  0%,100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  text-shadow: 0 0 5px #ff4fa3, 0 0 15px #ff4fa3;
 }
 
 /* ===== ВВОД ===== */
@@ -129,36 +115,21 @@ form button {
 #sceneBox img {
   max-width: 100%;
   border-radius: 12px;
-  margin-bottom: 15px;
 }
 .caption {
+  margin-top: 10px;
   font-size: 20px;
   color: #ffb3c6;
 }
-
-/* ===== УВЕДОМЛЕНИЕ ===== */
-#notify {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #ff4fa3;
-  padding: 12px 20px;
-  color: #fff;
-  opacity: 0;
-  transition: opacity 0.5s;
-}
-#notify.show { opacity: 1; }
 </style>
 </head>
 
 <body>
 
-<div id="notify">Она здесь 🖤</div>
-
 <div id="controls">
   <button onclick="sendLove()">💌 Любовь</button>
   <button onclick="sendPhoto()">📸 Воспоминание</button>
+  <button onclick="softClear()">✨ Новый момент</button>
   <button onclick="backToChat()">↩ Назад</button>
 </div>
 
@@ -177,7 +148,7 @@ form button {
 <script>
 /* ===== FIREBASE CONFIG ===== */
 const firebaseConfig = {
-apiKey: "AIzaSyAVbw2Ofx8uh_HlJJTwnwDgh9mlxcgmNbE",
+  apiKey: "AIzaSyAVbw2Ofx8uh_HlJJTwnwDgh9mlxcgmNbE",
   authDomain: "outside-c6a21.firebaseapp.com",
   databaseURL: "https://outside-c6a21-default-rtdb.firebaseio.com",
   projectId: "outside-c6a21",
@@ -195,6 +166,7 @@ const usersRef = db.ref(room + "/users");
 const messagesRef = db.ref(room + "/messages");
 const sceneRef = db.ref(room + "/scene");
 const usedRef = db.ref(room + "/used");
+const clearRef = db.ref(room + "/clearedAt");
 
 /* ===== ЛОГИН ===== */
 const login = prompt("Введи логин");
@@ -204,9 +176,9 @@ if (login === "outside") {
   document.getElementById("controls").style.display = "flex";
 }
 
-/* ===== ТОЛЬКО ДВОЕ + УВЕДОМЛЕНИЕ ===== */
+/* ===== ТОЛЬКО ДВОЕ ===== */
 usersRef.once("value", snap => {
-  if (snap.numChildren() >= 100) {
+  if (snap.numChildren() >= 2) {
     alert("Эта комната только для двоих.");
     document.body.innerHTML = "";
   } else {
@@ -214,34 +186,14 @@ usersRef.once("value", snap => {
   }
 });
 
-usersRef.on("value", snap => {
-  if (snap.numChildren() === 2 && login === "outside") {
-    const n = document.getElementById("notify");
-    n.classList.add("show");
-    setTimeout(() => n.classList.remove("show"), 3000);
-  }
-});
-
-window.addEventListener("beforeunload", () => {
-  usersRef.once("value", snap => {
-    snap.forEach(child => {
-      if (child.val().login === login) child.ref.remove();
-    });
-  });
-});
-
-/* ===== ТЕКСТЫ (БОЛЬШЕ) ===== */
+/* ===== ДАННЫЕ ===== */
 const loveTexts = [
   "Ты -- мой самый тёплый случай.",
   "С тобой мир становится мягче.",
   "Я улыбаюсь, когда думаю о нас.",
   "Ты -- место, где мне спокойно.",
   "С тобой даже тишина звучит красиво.",
-  "Я бы выбрал тебя снова.",
-  "Мы -- мой любимый сюжет.",
-  "Ты делаешь обычные дни особенными.",
-  "Я храню нас аккуратно.",
-  "Ты -- моё «всё хорошо»."
+  "Я бы выбрал тебя снова."
 ];
 
 const photos = [
@@ -254,17 +206,17 @@ const photos = [
 async function getUnused(type, array) {
   const snap = await usedRef.child(type).once("value");
   const used = snap.val() || {};
-  const available = array.map((item,i)=>({item,i})).filter(x=>!used[x.i]);
+  const available = array.map((v,i)=>({v,i})).filter(x=>!used[x.i]);
   if (!available.length) {
     await usedRef.child(type).remove();
     return getUnused(type,array);
   }
   const c = available[Math.floor(Math.random()*available.length)];
   await usedRef.child(type).child(c.i).set(true);
-  return c.item;
+  return c.v;
 }
 
-/* ===== КНОПКИ outside ===== */
+/* ===== КНОПКИ ===== */
 async function sendLove() {
   sceneRef.set({ type:"text", content: await getUnused("texts", loveTexts) });
 }
@@ -274,21 +226,39 @@ async function sendPhoto() {
 function backToChat() {
   sceneRef.set({ type:"chat" });
 }
+function softClear() {
+  if (login !== "outside") return;
+  clearRef.set(Date.now());
+}
+
+/* ===== МЯГКАЯ ОЧИСТКА ===== */
+let clearedAt = 0;
+clearRef.on("value", snap => {
+  clearedAt = snap.val() || 0;
+  messages.innerHTML = "";
+});
 
 /* ===== ЧАТ ===== */
 form.onsubmit = e => {
   e.preventDefault();
   if (!input.value.trim()) return;
-  messagesRef.push({ login, text: input.value });
+  messagesRef.push({
+    login,
+    text: input.value,
+    time: Date.now()
+  });
   input.value = "";
 };
 
 messagesRef.on("child_added", snap => {
   const m = snap.val();
+  if (m.time && m.time < clearedAt) return;
+
   const d = document.createElement("div");
   d.className = "message";
   d.innerHTML =
     `<span class="name ${m.login==="outside"?"outside":""}">${m.login}:</span> ${m.text}`;
+
   messages.appendChild(d);
   messages.scrollTop = messages.scrollHeight;
 });
@@ -297,15 +267,25 @@ messagesRef.on("child_added", snap => {
 sceneRef.on("value", snap => {
   const d = snap.val();
   if (!d) return;
+
   if (d.type === "chat") {
-    scene.style.display="none"; chat.style.display="flex"; return;
+    scene.style.display="none";
+    chat.style.display="flex";
+    return;
   }
-  chat.style.display="none"; scene.style.display="flex"; sceneBox.innerHTML="";
-  if (d.type==="text") sceneBox.innerHTML=`<p style="font-size:22px;">${d.content}</p><p>🖤</p>`;
-  if (d.type==="photo") sceneBox.innerHTML=`<img src="${d.content.img}"><div class="caption">${d.content.caption}</div>`;
+
+  chat.style.display="none";
+  scene.style.display="flex";
+  sceneBox.innerHTML="";
+
+  if (d.type==="text") {
+    sceneBox.innerHTML = `<p style="font-size:22px;">${d.content}</p><p>🖤</p>`;
+  }
+  if (d.type==="photo") {
+    sceneBox.innerHTML = `<img src="${d.content.img}"><div class="caption">${d.content.caption}</div>`;
+  }
 });
 </script>
 
 </body>
 </html>
-
