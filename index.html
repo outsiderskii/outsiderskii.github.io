@@ -2,347 +2,308 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>outside</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Только мы</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <style>
-:root{
-  --panel:rgba(255,255,255,.06);
-  --text:#e6e6eb;
-  --accent:#7cff9a;
+/* ===== БАЗА ===== */
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: "Georgia", serif;
+  background: radial-gradient(circle at top, #2b0a14, #0a0004);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:#000;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  color:var(--text);
-  overflow:hidden;
+/* ===== ЧЁРНЫЕ СЕРДЕЧКИ ===== */
+body::after {
+  content: "🖤 🖤 🖤 🖤 🖤 🖤 🖤 🖤";
+  position: fixed;
+  inset: 0;
+  font-size: 40px;
+  opacity: 0.08;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around;
+  justify-content: space-around;
+  animation: floatHearts 40s linear infinite;
+  pointer-events: none;
 }
 
-/* ===== ВХОД ===== */
-#login{
-  position:fixed;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.95);
-  z-index:10;
+@keyframes floatHearts {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-200px); }
 }
 
-.login-box{
-  background:var(--panel);
-  padding:28px 30px;
-  border-radius:18px;
-  text-align:center;
+/* ===== КНОПКИ outside ===== */
+#controls {
+  display: none;
+  padding: 10px;
+  background: rgba(0,0,0,0.6);
+  gap: 8px;
+}
+#controls button {
+  background: #ff8fab;
+  border: none;
+  padding: 10px 14px;
+  color: #fff;
+  cursor: pointer;
 }
 
-.login-box input{
-  background:#000;
-  border:1px solid #333;
-  color:#fff;
-  padding:12px;
-  width:200px;
-  border-radius:10px;
-  font-size:16px;
-  text-align:center;
+/* ===== ЧАТ ===== */
+#chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+#messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+.message { margin-bottom: 10px; }
+
+/* обычный ник */
+.name {
+  color: #ffb3c6;
+  font-weight: bold;
 }
 
-.login-box button{
-  margin-top:16px;
-  padding:12px 26px;
-  border:none;
-  border-radius:999px;
-  background:linear-gradient(135deg,#ffd86b,#caa32d);
-  color:#000;
-  font-weight:600;
-  cursor:pointer;
+/* НЕОНОВЫЙ outside */
+.name.outside {
+  color: #ff4fa3;
+  text-shadow:
+    0 0 5px #ff4fa3,
+    0 0 10px #ff4fa3,
+    0 0 20px #ff4fa3;
+  animation: neonPulse 2s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ===== ВВОД ===== */
+form {
+  display: flex;
+  padding: 10px;
+  background: rgba(0,0,0,0.4);
+}
+input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: #1a050b;
+  color: #fff;
+}
+form button {
+  margin-left: 10px;
+  background: #ff5c8a;
+  border: none;
+  padding: 10px 16px;
+  color: #fff;
 }
 
 /* ===== СЦЕНА ===== */
-#scene{
-  position:fixed;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
+#scene {
+  display: none;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+#sceneBox {
+  background: rgba(0,0,0,0.65);
+  padding: 30px;
+  max-width: 420px;
+  text-align: center;
+}
+#sceneBox img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+.caption {
+  font-size: 20px;
+  color: #ffb3c6;
 }
 
-.scene{
-  position:relative;
-  width:520px;
-  height:240px;
+/* ===== УВЕДОМЛЕНИЕ ===== */
+#notify {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff4fa3;
+  padding: 12px 20px;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.5s;
 }
-
-/* ===== ЗАМОК (ЗОЛОТО) ===== */
-.lock{
-  position:absolute;
-  right:70px;
-  top:50%;
-  transform:translateY(-50%);
-  width:90px;
-  height:90px;
-  background:linear-gradient(145deg,#ffd86b,#caa32d);
-  border-radius:14px;
-  box-shadow:inset 0 0 12px rgba(0,0,0,.6);
-}
-
-.hole{
-  position:absolute;
-  inset:0;
-  margin:auto;
-  width:20px;
-  height:12px;
-  background:#111;
-  border-radius:4px;
-}
-
-/* ===== КЛЮЧ (ЗОЛОТО) ===== */
-.key{
-  position:absolute;
-  left:-240px;
-  top:50%;
-  width:280px;
-  height:80px;
-  transform:translateY(-50%);
-  transform-origin:210px 40px;
-}
-
-.key.confirm{
-  animation:insert 2s ease forwards, twist 1.2s ease forwards 2s;
-}
-
-.key.decline{
-  animation:insert 2s ease forwards,
-             twist 1s ease forwards 2s,
-             break 0.6s ease forwards 3s;
-}
-
-.head{
-  position:absolute;
-  left:0;
-  top:10px;
-  width:70px;
-  height:60px;
-  border-radius:50%;
-  background:radial-gradient(circle at top,#fff2a8,#caa32d);
-}
-
-.head::after{
-  content:"";
-  position:absolute;
-  inset:16px;
-  border-radius:50%;
-  background:#1b1b1b;
-}
-
-.shaft{
-  position:absolute;
-  left:60px;
-  top:34px;
-  width:150px;
-  height:12px;
-  background:linear-gradient(90deg,#f5e38c,#caa32d);
-  border-radius:6px;
-}
-
-.teeth{
-  position:absolute;
-  left:180px;
-  top:34px;
-  width:60px;
-  height:40px;
-}
-
-.tooth{
-  position:absolute;
-  bottom:0;
-  width:16px;
-  background:linear-gradient(180deg,#e6cf6b,#b8942e);
-}
-
-.t1{left:0;height:14px}
-.t2{left:16px;height:24px}
-.t3{left:32px;height:10px}
-
-/* ===== ТЕКСТ ===== */
-.message{
-  position:absolute;
-  right:160px;
-  top:50%;
-  transform:translateY(-50%) translateX(20px);
-  font-size:20px;
-  opacity:0;
-}
-
-.confirm-text{
-  color:#7cff9a;
-  animation:reveal 1.2s ease forwards 3.2s;
-}
-
-.decline-text{
-  color:#ff5c5c;
-  animation:reveal 1s ease forwards 3.4s;
-}
-
-/* ===== АНИМАЦИИ ===== */
-@keyframes insert{to{left:120px}}
-@keyframes twist{to{transform:translateY(-50%) rotate(35deg)}}
-@keyframes break{to{transform:translateY(-50%) rotate(25deg) translateX(-25px)}}
-@keyframes reveal{to{opacity:1;transform:translateY(-50%) translateX(0)}}
-
-/* ===== ИНТРО ===== */
-#intro{
-  position:fixed;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
-}
-
-.intro-card{
-  background:var(--panel);
-  padding:30px 36px;
-  border-radius:22px;
-  text-align:center;
-}
-
-/* ===== ГАЛЕРЕЯ ===== */
-#gallery{
-  display:none;
-  padding:80px 20px 160px;
-  min-height:100vh;
-  overflow:auto;
-}
-
-.masonry{
-  max-width:1100px;
-  margin:0 auto;
-  column-count:3;
-  column-gap:24px;
-}
-
-.photo{
-  break-inside:avoid;
-  margin-bottom:24px;
-  border-radius:18px;
-  overflow:hidden;
-}
-
-.photo img{
-  width:100%;
-  display:block;
-}
-
-/* ===== ФИНАЛ ===== */
-#final{
-  margin:120px auto 0;
-  max-width:420px;
-  background:var(--panel);
-  padding:30px;
-  border-radius:24px;
-  text-align:center;
-}
-
-#final a{
-  display:inline-block;
-  margin-top:18px;
-  padding:14px 36px;
-  border-radius:999px;
-  background:linear-gradient(135deg,#ffd86b,#caa32d);
-  color:#000;
-  font-weight:600;
-  text-decoration:none;
-}
+#notify.show { opacity: 1; }
 </style>
 </head>
+
 <body>
 
-<!-- ВХОД -->
-<div id="login">
-  <div class="login-box">
-    <div>Введите пароль</div>
-    <input type="password" id="pass"><br>
-    <button onclick="check()">Войти</button>
-  </div>
+<div id="notify">Она здесь 🖤</div>
+
+<div id="controls">
+  <button onclick="sendLove()">💌 Любовь</button>
+  <button onclick="sendPhoto()">📸 Воспоминание</button>
+  <button onclick="backToChat()">↩ Назад</button>
 </div>
 
-<!-- СЦЕНА -->
+<div id="chat">
+  <div id="messages"></div>
+  <form id="form">
+    <input id="input" placeholder="Напиши что-нибудь…">
+    <button>❤</button>
+  </form>
+</div>
+
 <div id="scene">
-  <div class="scene">
-    <div class="key" id="key">
-      <div class="head"></div>
-      <div class="shaft"></div>
-      <div class="teeth">
-        <div class="tooth t1"></div>
-        <div class="tooth t2"></div>
-        <div class="tooth t3"></div>
-      </div>
-    </div>
-    <div class="lock"><div class="hole"></div></div>
-    <div class="message" id="msg"></div>
-  </div>
-</div>
-
-<!-- ИНТРО -->
-<div id="intro">
-  <div class="intro-card">
-    <p>Давай вспомним прошлое…</p>
-    <span style="opacity:.7">outside development</span>
-  </div>
-</div>
-
-<!-- ГАЛЕРЕЯ -->
-<div id="gallery">
-  <div class="masonry">
-    <a class="photo" href="https://imgfoto.host/i/IMG-1367.pd4jGa"><img src="https://a.imgfoto.host/2026/01/06/IMG_1367.jpeg"></a>
-    <a class="photo" href="https://imgfoto.host/i/IMG-0952.pd4ey1"><img src="https://a.imgfoto.host/2026/01/06/IMG_0952.jpeg"></a>
-    <a class="photo" href="https://imgfoto.host/i/IMG-1370.pd4LHI"><img src="https://a.imgfoto.host/2026/01/06/IMG_1370.jpeg"></a>
-    <a class="photo" href="https://imgfoto.host/i/IMG-1369.pd4VFn"><img src="https://a.imgfoto.host/2026/01/06/IMG_1369.jpeg"></a>
-  </div>
-
-  <div id="final">
-    <div style="font-size:22px">Давай продолжим?</div>
-    <a href="https://t.me/+JrTygG9PLOQ5YWMy" target="_blank">Давай</a>
-  </div>
+  <div id="sceneBox"></div>
 </div>
 
 <script>
-function check(){
-  const pass=document.getElementById("pass").value;
-  document.getElementById("login").remove();
+/* ===== FIREBASE CONFIG ===== */
+const firebaseConfig = {
+apiKey: "AIzaSyAVbw2Ofx8uh_HlJJTwnwDgh9mlxcgmNbE",
+  authDomain: "outside-c6a21.firebaseapp.com",
+  databaseURL: "https://outside-c6a21-default-rtdb.firebaseio.com",
+  projectId: "outside-c6a21",
+  storageBucket: "outside-c6a21.firebasestorage.app",
+  messagingSenderId: "629004481458",
+  appId: "1:629004481458:web:98b01543e0a267c1396aab",
+  measurementId: "G-01WJ03SS69"
+};
 
-  const scene=document.getElementById("scene");
-  const key=document.getElementById("key");
-  const msg=document.getElementById("msg");
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-  scene.style.display="flex";
+const room = "only-us";
+const usersRef = db.ref(room + "/users");
+const messagesRef = db.ref(room + "/messages");
+const sceneRef = db.ref(room + "/scene");
+const usedRef = db.ref(room + "/used");
 
-  if(pass==="2110"){
-    key.classList.add("confirm");
-    msg.textContent="outsidesecurity confirme";
-    msg.className="message confirm-text";
+/* ===== ЛОГИН ===== */
+const login = prompt("Введи логин");
+if (!login) document.body.innerHTML = "";
 
-    setTimeout(()=>{
-      scene.remove();
-      document.getElementById("intro").style.display="flex";
-
-      setTimeout(()=>{
-        document.getElementById("intro").remove();
-        document.getElementById("gallery").style.display="block";
-        document.body.style.overflow="auto";
-      },3000);
-    },4200);
-  }else{
-    key.classList.add("decline");
-    msg.textContent="outsidesecurity decline";
-    msg.className="message decline-text";
-    setTimeout(()=>location.reload(),4200);
-  }
+if (login === "outside") {
+  document.getElementById("controls").style.display = "flex";
 }
+
+/* ===== ТОЛЬКО ДВОЕ + УВЕДОМЛЕНИЕ ===== */
+usersRef.once("value", snap => {
+  if (snap.numChildren() >= 2) {
+    alert("Эта комната только для двоих.");
+    document.body.innerHTML = "";
+  } else {
+    usersRef.push({ login });
+  }
+});
+
+usersRef.on("value", snap => {
+  if (snap.numChildren() === 2 && login === "outside") {
+    const n = document.getElementById("notify");
+    n.classList.add("show");
+    setTimeout(() => n.classList.remove("show"), 3000);
+  }
+});
+
+window.addEventListener("beforeunload", () => {
+  usersRef.once("value", snap => {
+    snap.forEach(child => {
+      if (child.val().login === login) child.ref.remove();
+    });
+  });
+});
+
+/* ===== ТЕКСТЫ (БОЛЬШЕ) ===== */
+const loveTexts = [
+  "Ты -- мой самый тёплый случай.",
+  "С тобой мир становится мягче.",
+  "Я улыбаюсь, когда думаю о нас.",
+  "Ты -- место, где мне спокойно.",
+  "С тобой даже тишина звучит красиво.",
+  "Я бы выбрал тебя снова.",
+  "Мы -- мой любимый сюжет.",
+  "Ты делаешь обычные дни особенными.",
+  "Я храню нас аккуратно.",
+  "Ты -- моё «всё хорошо»."
+];
+
+const photos = [
+  { img: "https://a.imgfoto.host/2026/01/06/IMG_1367.jpeg", caption: "Назад в прошлое…" },
+  { img: "https://a.imgfoto.host/2026/01/06/IMG_0952.jpeg", caption: "Посмотри на нас счастливых 💋" },
+  { img: "https://a.imgfoto.host/2026/01/06/IMG_1370.jpeg", caption: "Этот момент всё ещё живёт" }
+];
+
+/* ===== НЕПОВТОРЕНИЕ ===== */
+async function getUnused(type, array) {
+  const snap = await usedRef.child(type).once("value");
+  const used = snap.val() || {};
+  const available = array.map((item,i)=>({item,i})).filter(x=>!used[x.i]);
+  if (!available.length) {
+    await usedRef.child(type).remove();
+    return getUnused(type,array);
+  }
+  const c = available[Math.floor(Math.random()*available.length)];
+  await usedRef.child(type).child(c.i).set(true);
+  return c.item;
+}
+
+/* ===== КНОПКИ outside ===== */
+async function sendLove() {
+  sceneRef.set({ type:"text", content: await getUnused("texts", loveTexts) });
+}
+async function sendPhoto() {
+  sceneRef.set({ type:"photo", content: await getUnused("photos", photos) });
+}
+function backToChat() {
+  sceneRef.set({ type:"chat" });
+}
+
+/* ===== ЧАТ ===== */
+form.onsubmit = e => {
+  e.preventDefault();
+  if (!input.value.trim()) return;
+  messagesRef.push({ login, text: input.value });
+  input.value = "";
+};
+
+messagesRef.on("child_added", snap => {
+  const m = snap.val();
+  const d = document.createElement("div");
+  d.className = "message";
+  d.innerHTML =
+    `<span class="name ${m.login==="outside"?"outside":""}">${m.login}:</span> ${m.text}`;
+  messages.appendChild(d);
+  messages.scrollTop = messages.scrollHeight;
+});
+
+/* ===== СЦЕНЫ ===== */
+sceneRef.on("value", snap => {
+  const d = snap.val();
+  if (!d) return;
+  if (d.type === "chat") {
+    scene.style.display="none"; chat.style.display="flex"; return;
+  }
+  chat.style.display="none"; scene.style.display="flex"; sceneBox.innerHTML="";
+  if (d.type==="text") sceneBox.innerHTML=`<p style="font-size:22px;">${d.content}</p><p>🖤</p>`;
+  if (d.type==="photo") sceneBox.innerHTML=`<img src="${d.content.img}"><div class="caption">${d.content.caption}</div>`;
+});
 </script>
 
 </body>
