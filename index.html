@@ -1,292 +1,206 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>outdev</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valeria | outdev</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-pink: #ff2d55;
+            --bg-black: #000000;
+            --text-main: #ffffff;
+            --text-secondary: #888888;
+        }
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-<style>
-body {
-  margin: 0;
-  height: 100vh;
-  font-family: "Georgia", serif;
-  background: radial-gradient(circle at top, #2b0a14, #0a0004);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
 
-/* 🖤 ФОН */
-body::after {
-  content: "🖤 🖤 🖤 🖤 🖤 🖤 🖤 🖤";
-  position: fixed;
-  inset: 0;
-  font-size: 40px;
-  opacity: 0.08;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: space-around;
-  justify-content: space-around;
-  animation: floatHearts 40s linear infinite;
-  pointer-events: none;
-}
-@keyframes floatHearts {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-200px); }
-}
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 25px 5%;
+            display: flex;
+            justify-content: center;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            border-bottom: 1px solid #111;
+        }
 
-/* ===== КНОПКИ outside ===== */
-#controls {
-  display: none;
-  padding: 10px;
-  background: rgba(0,0,0,0.6);
-  gap: 8px;
-}
-#controls button {
-  background: #ff8fab;
-  border: none;
-  padding: 10px 14px;
-  color: #fff;
-  cursor: pointer;
-}
+        .logo { font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; color: var(--text-main); }
+        .logo span { color: var(--accent-pink); }
 
-/* ===== ЧАТ ===== */
-#chat {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-#messages {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-}
-.message { margin-bottom: 10px; }
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 10%;
+        }
 
-.name {
-  color: #ffb3c6;
-  font-weight: bold;
-}
-.name.outside {
-  color: #ff4fa3;
-  text-shadow: 0 0 5px #ff4fa3, 0 0 15px #ff4fa3;
-}
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            width: 100%;
+        }
 
-/* ===== ВВОД ===== */
-form {
-  display: flex;
-  padding: 10px;
-  background: rgba(0,0,0,0.4);
-}
-input {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  background: #1a050b;
-  color: #fff;
-}
-form button {
-  margin-left: 10px;
-  background: #ff5c8a;
-  border: none;
-  padding: 10px 16px;
-  color: #fff;
-}
+        /* Специфическая сетка для 3-й секции */
+        .music-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr; /* Лево - Центр - Право */
+            gap: 30px;
+            align-items: center;
+            width: 100%;
+        }
 
-/* ===== СЦЕНА ===== */
-#scene {
-  display: none;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  padding: 30px;
-}
-#sceneBox {
-  background: rgba(0,0,0,0.65);
-  padding: 30px;
-  max-width: 420px;
-  text-align: center;
-}
-#sceneBox img {
-  max-width: 100%;
-  border-radius: 12px;
-}
-.caption {
-  margin-top: 10px;
-  font-size: 20px;
-  color: #ffb3c6;
-}
-</style>
+        .main-photo {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 45, 85, 0.2);
+            border: 1px solid var(--accent-pink);
+            transition: 0.5s;
+        }
+
+        .photo-center {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        h3 {
+            color: var(--accent-pink);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .music-info-box {
+            background: rgba(255, 45, 85, 0.05);
+            padding: 20px;
+            border-right: 2px solid var(--accent-pink);
+            text-align: right;
+        }
+
+        footer {
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+
+        .big-text {
+            font-size: 10vw;
+            font-weight: 900;
+            color: transparent;
+            -webkit-text-stroke: 1px #333;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+
+        @media (max-width: 1100px) {
+            .music-grid { grid-template-columns: 1fr; text-align: center; }
+            .music-info-box { text-align: center; border-right: none; border-bottom: 2px solid var(--accent-pink); }
+            .photo-center { order: -1; }
+        }
+    </style>
 </head>
-
 <body>
 
-<div id="controls">
-  <button onclick="sendLove()">💌 Любовь</button>
-  <button onclick="sendPhoto()">📸 Воспоминание</button>
-  <button onclick="softClear()">✨ Новый момент</button>
-  <button onclick="backToChat()">↩ Назад</button>
-</div>
+    <nav>
+        <div class="logo">outside-<span>devv<3</span></div>
+    </nav>
 
-<div id="chat">
-  <div id="messages"></div>
-  <form id="form">
-    <input id="input" placeholder="Напиши что-нибудь…">
-    <button>❤</button>
-  </form>
-</div>
+    <!-- Секция 1 -->
+    <section>
+        <div class="container">
+            <div class="photo-wrapper" data-aos="fade-right">
+                <img src="https://i.ibb.co/0jyNKZ1k/photo-2026-05-02-16-12-05.jpg" alt="Валерия" class="main-photo">
+            </div>
+            <div class="text-content" data-aos="fade-left">
+                <h3>пескова <3</h3>
+                <h1>Пятаева Валерия</h1>
+                <p>Лучшая девушка в мире, с отличной внешностью, любящая и ценящая все на свете. Человек, который наполняет каждый день смыслом и светом.</p>
+            </div>
+        </div>
+    </section>
 
-<div id="scene">
-  <div id="sceneBox"></div>
-</div>
+    <!-- Секция 2 -->
+    <section style="background-color: #050505;">
+        <div class="container">
+            <div class="text-content" data-aos="fade-right">
+                <h1>Искренность в деталях</h1>
+                <p>Её улыбка способна растопить любой лед, а взгляд всегда говорит больше, чем тысячи слов. Валерия обладает редким даром — замечать прекрасное в мелочах и дарить тепло окружающим.</p>
+            </div>
+            <div class="photo-wrapper" data-aos="fade-left">
+                <img src="https://i.ibb.co/5hBV8sQf/photo-2025-09-08-23-27-28.jpg" alt="Валерия" class="main-photo">
+            </div>
+        </div>
+    </section>
 
-<script>
-/* ===== FIREBASE CONFIG ===== */
-const firebaseConfig = {
-  apiKey: "AIzaSyAVbw2Ofx8uh_HlJJTwnwDgh9mlxcgmNbE",
-  authDomain: "outside-c6a21.firebaseapp.com",
-  databaseURL: "https://outside-c6a21-default-rtdb.firebaseio.com",
-  projectId: "outside-c6a21",
-  storageBucket: "outside-c6a21.firebasestorage.app",
-  messagingSenderId: "629004481458",
-  appId: "1:629004481458:web:98b01543e0a267c1396aab",
-  measurementId: "G-01WJ03SS69"
-};
+    <!-- Секция 3: Музыкальная (Фото по центру) -->
+    <section>
+        <div class="music-grid">
+            <!-- Слева: Биография Глеба -->
+            <div class="text-content" data-aos="fade-right">
+                <h3>Биография</h3>
+                <h2>Глеб Викторов</h2>
+                <p>
+                    Основатель рок-группы «Три дня дождя». Глеб родился в Кызыле и прошел путь от битмейкера до одного из главных лиц современного альтернативного рока в СНГ. Его музыка — это глубокая лирика о чувствах, зависимостях и жизни.
+                </p>
+            </div>
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+            <!-- По центру: Фото -->
+            <div class="photo-wrapper photo-center" data-aos="zoom-in">
+                <img src="https://i.ibb.co/wrRQ27LJ/IMG-2738.jpg" alt="Валерия и музыка" class="main-photo">
+            </div>
 
-const room = "only-us";
-const usersRef = db.ref(room + "/users");
-const messagesRef = db.ref(room + "/messages");
-const sceneRef = db.ref(room + "/scene");
-const usedRef = db.ref(room + "/used");
-const clearRef = db.ref(room + "/clearedAt");
+            <!-- Справа: Любимое -->
+            <div class="text-content music-info-box" data-aos="fade-left">
+                <h3>Музыкальный вкус</h3>
+                <h2 style="font-size: 2rem;">Три дня дождя</h2>
+                <p style="color: var(--text-main);">Любимый певец: <strong>Глеб Викторов</strong></p>
+                <p style="margin-top: 15px; color: var(--accent-pink);">Любимый проигрыш:</p>
+                <p style="font-style: italic;">ТДД — Не важно</p>
+            </div>
+        </div>
+    </section>
 
-/* ===== ЛОГИН ===== */
-const login = prompt("Введи логин");
-if (!login) document.body.innerHTML = "";
+    <footer>
+        <div class="big-text" data-aos="zoom-in">outside owner</div>
+        <p style="letter-spacing: 10px; font-size: 0.6rem; opacity: 0.3; margin-top: 20px;">DESIGNED FOR THE BEST ONE</p>
+    </footer>
 
-if (login === "outside") {
-  document.getElementById("controls").style.display = "flex";
-}
-
-/* ===== ТОЛЬКО ДВОЕ ===== */
-usersRef.once("value", snap => {
-  if (snap.numChildren() >= 100) {
-    alert("Эта комната только для двоих.");
-    document.body.innerHTML = "";
-  } else {
-    usersRef.push({ login });
-  }
-});
-
-/* ===== ДАННЫЕ ===== */
-const loveTexts = [
-  "Ты -- мой самый тёплый случай.",
-  "С тобой мир становится мягче.",
-  "Я улыбаюсь, когда думаю о нас.",
-  "Ты -- место, где мне спокойно.",
-  "С тобой даже тишина звучит красиво.",
-  "Я бы выбрал тебя снова."
-];
-
-const photos = [
-  { img: "https://a.imgfoto.host/2026/01/06/IMG_1367.jpeg", caption: "Назад в прошлое…" },
-  { img: "https://a.imgfoto.host/2026/01/06/IMG_0952.jpeg", caption: "Посмотри на нас счастливых 💋" },
-  { img: "https://a.imgfoto.host/2026/01/06/IMG_1370.jpeg", caption: "Этот момент всё ещё живёт" }
-];
-
-/* ===== НЕПОВТОРЕНИЕ ===== */
-async function getUnused(type, array) {
-  const snap = await usedRef.child(type).once("value");
-  const used = snap.val() || {};
-  const available = array.map((v,i)=>({v,i})).filter(x=>!used[x.i]);
-  if (!available.length) {
-    await usedRef.child(type).remove();
-    return getUnused(type,array);
-  }
-  const c = available[Math.floor(Math.random()*available.length)];
-  await usedRef.child(type).child(c.i).set(true);
-  return c.v;
-}
-
-/* ===== КНОПКИ ===== */
-async function sendLove() {
-  sceneRef.set({ type:"text", content: await getUnused("texts", loveTexts) });
-}
-async function sendPhoto() {
-  sceneRef.set({ type:"photo", content: await getUnused("photos", photos) });
-}
-function backToChat() {
-  sceneRef.set({ type:"chat" });
-}
-function softClear() {
-  if (login !== "outside") return;
-  clearRef.set(Date.now());
-}
-
-/* ===== МЯГКАЯ ОЧИСТКА ===== */
-let clearedAt = 0;
-clearRef.on("value", snap => {
-  clearedAt = snap.val() || 0;
-  messages.innerHTML = "";
-});
-
-/* ===== ЧАТ ===== */
-form.onsubmit = e => {
-  e.preventDefault();
-  if (!input.value.trim()) return;
-  messagesRef.push({
-    login,
-    text: input.value,
-    time: Date.now()
-  });
-  input.value = "";
-};
-
-messagesRef.on("child_added", snap => {
-  const m = snap.val();
-  if (m.time && m.time < clearedAt) return;
-
-  const d = document.createElement("div");
-  d.className = "message";
-  d.innerHTML =
-    `<span class="name ${m.login==="outside"?"outside":""}">${m.login}:</span> ${m.text}`;
-
-  messages.appendChild(d);
-  messages.scrollTop = messages.scrollHeight;
-});
-
-/* ===== СЦЕНЫ ===== */
-sceneRef.on("value", snap => {
-  const d = snap.val();
-  if (!d) return;
-
-  if (d.type === "chat") {
-    scene.style.display="none";
-    chat.style.display="flex";
-    return;
-  }
-
-  chat.style.display="none";
-  scene.style.display="flex";
-  sceneBox.innerHTML="";
-
-  if (d.type==="text") {
-    sceneBox.innerHTML = `<p style="font-size:22px;">${d.content}</p><p>🖤</p>`;
-  }
-  if (d.type==="photo") {
-    sceneBox.innerHTML = `<img src="${d.content.img}"><div class="caption">${d.content.caption}</div>`;
-  }
-});
-</script>
-
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: false,
+            mirror: true
+        });
+    </script>
 </body>
 </html>
-
