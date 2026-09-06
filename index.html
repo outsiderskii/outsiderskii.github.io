@@ -2,205 +2,963 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valeria | outdev</title>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Bake Lab — авторские торты</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --accent-pink: #ff2d55;
-            --bg-black: #000000;
-            --text-main: #ffffff;
-            --text-secondary: #888888;
+            --bg: #fdf8f4;
+            --card-bg: #ffffff;
+            --text-primary: #2d2a26;
+            --text-secondary: #6b5e52;
+            --accent: #c68a6e;
+            --accent-dark: #a86e54;
+            --accent-soft: #f6e9e2;
+            --gold: #d4af7a;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.07), 0 4px 12px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 20px 38px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(0, 0, 0, 0.05);
+            --radius: 22px;
+            --radius-sm: 14px;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            background-color: var(--bg-black);
-            color: var(--text-main);
-            font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
-        }
-
-        nav {
-            position: fixed;
-            top: 0; width: 100%;
-            padding: 25px 5%;
-            display: flex;
-            justify-content: center;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(15px);
-            z-index: 1000;
-            border-bottom: 1px solid #111;
-        }
-
-        .logo { font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; color: var(--text-main); }
-        .logo span { color: var(--accent-pink); }
-
-        section {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(circle at 10% 20%, rgba(214, 175, 122, 0.06) 0%, transparent 30%),
+                              radial-gradient(circle at 90% 80%, rgba(198, 138, 110, 0.08) 0%, transparent 40%);
+            color: var(--text-primary);
+            line-height: 1.5;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            padding: 100px 10%;
         }
 
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
+        /* ШАПКА */
+        .header {
+            width: 100%;
+            max-width: 1280px;
+            padding: 1.2rem 2rem;
+            display: flex;
             align-items: center;
-            width: 100%;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: relative;
+            z-index: 10;
         }
-
-        /* Специфическая сетка для 3-й секции */
-        .music-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr 1fr; /* Лево - Центр - Право */
-            gap: 30px;
+        .logo {
+            display: flex;
             align-items: center;
-            width: 100%;
-        }
-
-        .main-photo {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(255, 45, 85, 0.2);
-            border: 1px solid var(--accent-pink);
-            transition: 0.5s;
-        }
-
-        .photo-center {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        h1, h2 {
+            gap: 0.75rem;
             font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            margin-bottom: 20px;
-            line-height: 1.1;
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
         }
-
-        h3 {
-            color: var(--accent-pink);
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
+        .logo i { font-size: 2rem; color: var(--accent); }
+        .logo span {
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
-        p {
-            font-size: 1rem;
-            line-height: 1.6;
+        .nav { display: flex; gap: 2rem; align-items: center; }
+        .nav a {
+            text-decoration: none;
             color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.2rem 0;
+            cursor: pointer;
+        }
+        .nav a:hover { color: var(--accent); }
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0;
+            width: 0; height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+            border-radius: 4px;
+        }
+        .nav a:hover::after { width: 100%; }
+        .header-actions { display: flex; gap: 1.2rem; align-items: center; }
+        .header-actions i {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+        .header-actions i:hover { color: var(--accent); transform: translateY(-2px); }
+        .cart-icon-wrap { position: relative; }
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 600;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
         }
 
-        .music-info-box {
-            background: rgba(255, 45, 85, 0.05);
-            padding: 20px;
-            border-right: 2px solid var(--accent-pink);
-            text-align: right;
+        /* ГЛАВНЫЙ БАННЕР */
+        .hero {
+            width: 100%;
+            max-width: 1280px;
+            margin-top: 1rem;
+            margin-bottom: 2.5rem;
+            padding: 3rem 2.5rem;
+            background: linear-gradient(145deg, #fdf1e9 0%, #f8e8dd 50%, #f6e3d4 100%);
+            border-radius: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            scroll-margin-top: 20px;
         }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -40%; right: -10%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(212, 175, 122, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero-content { flex: 1 1 300px; position: relative; z-index: 2; }
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem;
+        }
+        .hero-content h1 .highlight { color: var(--accent); font-style: italic; }
+        .hero-content p { font-size: 1.1rem; color: var(--text-secondary); max-width: 480px; margin-bottom: 2rem; font-weight: 300; }
+        .btn-primary {
+            display: inline-block;
+            background: var(--accent); color: #fff; padding: 0.9rem 2.2rem; border-radius: 40px;
+            text-decoration: none; font-weight: 600; letter-spacing: 0.5px; transition: var(--transition);
+            box-shadow: 0 8px 18px rgba(198, 138, 110, 0.35); border: none; cursor: pointer; font-size: 0.95rem;
+        }
+        .btn-primary:hover { background: var(--accent-dark); transform: translateY(-4px); box-shadow: 0 14px 26px rgba(198, 138, 110, 0.45); }
+        .hero-image { flex: 1 1 280px; display: flex; justify-content: center; align-items: center; position: relative; z-index: 2; }
+        .hero-image img {
+            max-width: 100%;
+            width: 360px; height: auto;
+            border-radius: 35% 65% 40% 60% / 55% 45% 55% 45%;
+            box-shadow: var(--shadow-hover);
+            object-fit: cover;
+            transition: var(--transition);
+            border: 6px solid rgba(255, 255, 255, 0.6);
+        }
+        .hero-image img:hover { border-radius: 45% 55% 50% 50% / 50% 45% 55% 50%; }
 
-        footer {
-            height: 50vh;
+        /* СЕКЦИЯ ФИЛЬТРОВ */
+        .filter-section {
+            width: 100%;
+            max-width: 1280px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+            padding: 0 0.5rem;
+            scroll-margin-top: 20px;
+        }
+        .filter-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 600; }
+        .filter-buttons { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .filter-btn {
+            background: transparent; border: 1.5px solid #e2d5ca; padding: 0.55rem 1.5rem;
+            border-radius: 30px; font-family: 'Inter', sans-serif; font-weight: 500;
+            color: var(--text-secondary); cursor: pointer; transition: var(--transition); font-size: 0.9rem;
+        }
+        .filter-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(198, 138, 110, 0.05); }
+        .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 6px 14px rgba(198, 138, 110, 0.3); }
+
+        /* СЕТКА КАРТОЧЕК */
+        .catalog-grid {
+            width: 100%;
+            max-width: 1280px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+            padding: 0.5rem;
+            margin-bottom: 3rem;
+        }
+        .cake-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+        }
+        .cake-card:hover { transform: translateY(-12px); box-shadow: var(--shadow-hover); }
+        .card-image-wrapper { position: relative; overflow: hidden; height: 230px; background: #f3e8df; }
+        .card-image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .cake-card:hover .card-image-wrapper img { transform: scale(1.08); }
+        .card-badge {
+            position: absolute; top: 16px; left: 16px; background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px); padding: 0.4rem 1rem; border-radius: 30px;
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; color: var(--accent-dark);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        .card-body { padding: 1.5rem 1.4rem 1.8rem; display: flex; flex-direction: column; gap: 0.6rem; }
+        .card-category { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; }
+        .card-title { font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.4rem; line-height: 1.3; }
+        .card-description { color: var(--text-secondary); font-size: 0.9rem; font-weight: 300; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0.4rem; }
+        .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+        .card-price { font-weight: 600; font-size: 1.2rem; }
+        .card-price span { font-size: 0.8rem; color: var(--text-secondary); font-weight: 400; }
+        .add-btn {
+            background: var(--accent-soft); color: var(--accent-dark); border: none; width: 40px; height: 40px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: var(--transition); font-size: 1rem;
+        }
+        .add-btn:hover { background: var(--accent); color: #fff; transform: rotate(90deg); }
+
+        /* СЕКЦИЯ ПРАЙСА */
+        .price-section {
+            width: 100%;
+            max-width: 1280px;
+            margin-top: 1rem;
+            margin-bottom: 3rem;
+            padding: 2rem 1rem;
+            scroll-margin-top: 20px;
+        }
+        .price-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .price-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.8rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        .price-card:hover { box-shadow: var(--shadow-md); transform: translateY(-5px); }
+        .price-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-dark);
+            border-bottom: 2px solid var(--accent-soft);
+            padding-bottom: 0.5rem;
+        }
+        .price-item {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            background: #000;
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed #f0e6de;
+            font-size: 0.95rem;
+        }
+        .price-item:last-child { border-bottom: none; }
+        .price-item .name { font-weight: 500; }
+        .price-item .price { font-weight: 600; color: var(--accent-dark); white-space: nowrap; }
+        .price-note {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 0.5rem;
+            text-align: center;
         }
 
-        .big-text {
-            font-size: 10vw;
-            font-weight: 900;
-            color: transparent;
-            -webkit-text-stroke: 1px #333;
-            text-transform: uppercase;
-            letter-spacing: -2px;
+        /* МОДАЛЬНОЕ ОКНО (товар) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center; z-index: 100;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            overflow-y: auto;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal {
+            background: #fff; border-radius: 36px; max-width: 520px; width: 90%; padding: 2.2rem;
+            position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            transform: scale(0.9); transition: transform 0.3s ease;
+            margin: auto;
+        }
+        .modal-overlay.active .modal { transform: scale(1); }
+        .modal-close {
+            position: absolute; top: 18px; right: 24px; background: none; border: none;
+            font-size: 1.8rem; color: var(--text-secondary); cursor: pointer; transition: var(--transition);
+        }
+        .modal-close:hover { color: var(--accent); transform: rotate(90deg); }
+        .modal img { width: 100%; height: 260px; object-fit: cover; border-radius: 20px; margin-bottom: 1.5rem; }
+        .modal h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .modal-category { color: var(--accent); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 0.8rem; }
+        .modal p { color: var(--text-secondary); margin-bottom: 1.2rem; }
+        .modal-price { font-size: 1.6rem; font-weight: 700; margin-bottom: 1.5rem; }
+
+        /* КОРЗИНА (модальное окно) */
+        .cart-modal {
+            max-width: 700px;
+            max-height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .cart-items {
+            flex-shrink: 1;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+            max-height: 40vh;
+            padding-right: 0.5rem;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f0e6de;
+        }
+        .cart-item .item-name { font-weight: 500; }
+        .cart-item .item-price { font-weight: 600; color: var(--accent-dark); }
+        .cart-item .remove-item {
+            background: none; border: none; color: #ccc; cursor: pointer; font-size: 1.2rem; transition: var(--transition);
+        }
+        .cart-item .remove-item:hover { color: var(--accent); }
+        .cart-total {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: right;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+        }
+        .cart-empty {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 2rem 0;
         }
 
-        @media (max-width: 1100px) {
-            .music-grid { grid-template-columns: 1fr; text-align: center; }
-            .music-info-box { text-align: center; border-right: none; border-bottom: 2px solid var(--accent-pink); }
-            .photo-center { order: -1; }
+        /* Секция выбора допов (только декор) */
+        .extras-section {
+            margin-top: 1.5rem;
+            border-top: 2px solid var(--accent-soft);
+            padding-top: 1.5rem;
+            flex-shrink: 0;
+        }
+        .extras-section h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent-dark);
+        }
+        #extrasContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            max-height: 150px;
+            overflow-y: auto;
+            padding-right: 0.3rem;
+        }
+        .extra-item {
+            background: var(--accent-soft);
+            border-radius: 30px;
+            padding: 0.3rem 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .extra-item .extra-name { font-weight: 500; }
+        .extra-item .extra-price { color: var(--text-secondary); font-size: 0.8rem; }
+        .extra-item .add-extra-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .extra-item .add-extra-btn:hover { background: var(--accent-dark); }
+
+        /* Секция доставки */
+        .delivery-section {
+            margin-top: 1.5rem;
+            border-top: 2px solid var(--accent-soft);
+            padding-top: 1.5rem;
+            flex-shrink: 0;
+        }
+        .delivery-section h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent-dark);
+        }
+        .delivery-options label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .delivery-options input[type="radio"] {
+            accent-color: var(--accent);
+        }
+
+        /* ФУТЕР */
+        .footer {
+            width: 100%;
+            max-width: 1280px;
+            margin-top: auto;
+            padding: 2rem 1rem 1.5rem;
+            border-top: 1px solid #ede3da;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            scroll-margin-top: 20px;
+        }
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .header { padding: 1rem 1.2rem; flex-direction: column; align-items: flex-start; }
+            .nav { gap: 1.2rem; flex-wrap: wrap; }
+            .hero { padding: 2rem 1.5rem; border-radius: 32px; }
+            .hero-content h1 { font-size: 2.4rem; }
+            .hero-image img { width: 260px; }
+            .filter-section { flex-direction: column; align-items: flex-start; }
+            .price-grid { grid-template-columns: 1fr; }
+            .cart-modal {
+                max-height: 95vh;
+                padding: 1.5rem;
+            }
+            .cart-items {
+                max-height: 50vh;
+            }
+            #extrasContainer {
+                max-height: 120px;
+            }
+        }
+        @media (max-width: 480px) {
+            .catalog-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2rem; }
+            .modal { padding: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">outside-<span>devv<3</span></div>
-    </nav>
-
-    <!-- Секция 1 -->
-    <section>
-        <div class="container">
-            <div class="photo-wrapper" data-aos="fade-right">
-                <img src="https://i.ibb.co/0jyNKZ1k/photo-2026-05-02-16-12-05.jpg" alt="Валерия" class="main-photo">
+    <!-- ШАПКА -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-birthday-cake"></i>
+            <span>Bake Lab</span>
+        </div>
+        <nav class="nav" id="mainNav">
+            <a data-target="hero">Главная</a>
+            <a data-target="catalog">Каталог</a>
+            <a data-target="price">Прайс</a>
+            <a data-target="footer">Контакты</a>
+        </nav>
+        <div class="header-actions">
+            <i class="fas fa-search"></i>
+            <div class="cart-icon-wrap">
+                <i class="fas fa-shopping-bag" id="cartIcon"></i>
+                <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
             </div>
-            <div class="text-content" data-aos="fade-left">
-                <h3>пескова <3</h3>
-                <h1>Пятаева Валерия</h1>
-                <p>Лучшая девушка в мире, с отличной внешностью, любящая и ценящая все на свете. Человек, который наполняет каждый день смыслом и светом.</p>
+            <i class="fas fa-user-circle"></i>
+        </div>
+    </header>
+
+    <!-- ГЛАВНЫЙ БАННЕР -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1>Bake Lab — <span class="highlight">авторские торты</span><br>для особенных моментов</h1>
+            <p>Создаём сладкие шедевры из натуральных ингредиентов. Каждый торт — маленькое произведение искусства.</p>
+            <a href="#" class="btn-primary" onclick="event.preventDefault(); document.getElementById('catalog').scrollIntoView({behavior:'smooth'});">Выбрать торт <i class="fas fa-arrow-right" style="margin-left:8px;"></i></a>
+        </div>
+        <div class="hero-image">
+            <img src="https://i.ibb.co/My25gqRj/r3c0s7-U8gqdad-QPw-Xd-WIO4-Q9-Ig-VPQj-LF9-UNEe-Zcx1bk4-Yc-Qa56-Uq-Ucr3-Iy-Jmhqus-VNtbf-F8h-H-Wl-CPo-e-VBVAa.jpg" alt="Торт Bake Lab" />
+        </div>
+    </section>
+
+    <!-- КАТАЛОГ -->
+    <div class="filter-section" id="catalog">
+        <h2 class="filter-title">Наша коллекция</h2>
+        <div class="filter-buttons" id="filterButtons">
+            <button class="filter-btn active" data-filter="all">Все</button>
+            <button class="filter-btn" data-filter="classic">Классические</button>
+            <button class="filter-btn" data-filter="chocolate">Шоколадные</button>
+            <button class="filter-btn" data-filter="fruit">Фруктовые</button>
+            <button class="filter-btn" data-filter="berry">Ягодные</button>
+        </div>
+    </div>
+
+    <div class="catalog-grid" id="cakeGrid"></div>
+
+    <!-- СЕКЦИЯ ПРАЙСА -->
+    <section class="price-section" id="price">
+        <h2>Прайс-лист</h2>
+        <div class="price-grid">
+            <div class="price-card">
+                <h3><i class="fas fa-birthday-cake"></i> Торты</h3>
+                <div class="price-item"><span class="name">Сникерс</span><span class="price">1400 ₽/кг</span></div>
+                <div class="price-item"><span class="name">Карамельный банан</span><span class="price">1400 ₽/кг</span></div>
+                <div class="price-item"><span class="name">Красный бархат (+малина, клубника, вишня)</span><span class="price">1350 ₽/кг</span></div>
+                <div class="price-item"><span class="name">Малина</span><span class="price">1200 ₽/кг</span></div>
+                <div class="price-item"><span class="name">Вишня в шоколаде</span><span class="price">1300 ₽/кг</span></div>
+                <div class="price-item"><span class="name">Шоколад банан</span><span class="price">1450 ₽/кг</span></div>
+                <div class="price-item"><span class="name">Шоколадный Ферреро</span><span class="price">1500 ₽/кг</span></div>
+            </div>
+            <div class="price-card">
+                <h3><i class="fas fa-layer-group"></i> Начинки</h3>
+                <div class="price-item"><span class="name">Малина (100 гр)</span><span class="price">26 ₽</span></div>
+                <div class="price-item"><span class="name">Вишня (100 гр)</span><span class="price">35 ₽</span></div>
+                <div class="price-item"><span class="name">Банан (100 гр)</span><span class="price">18 ₽</span></div>
+                <div class="price-item"><span class="name">Карамель (100-130 гр)</span><span class="price">40 ₽</span></div>
+                <div class="price-item"><span class="name">Клубника (100 гр)</span><span class="price">30 ₽</span></div>
+                <div class="price-item"><span class="name">Арахис (40 гр)</span><span class="price">24 ₽</span></div>
+                <div class="price-item"><span class="name">Ганаш (100-130 гр)</span><span class="price">80 ₽</span></div>
+                <div class="price-item"><span class="name">Фундук (200 гр)</span><span class="price">130 ₽</span></div>
+                <div class="price-item"><span class="name">Вафля (100 гр)</span><span class="price">10 ₽</span></div>
+            </div>
+            <div class="price-card">
+                <h3><i class="fas fa-paint-brush"></i> Декор</h3>
+                <div class="price-item"><span class="name">Мастика</span><span class="price">150 ₽</span></div>
+                <div class="price-item"><span class="name">Надпись</span><span class="price">14 ₽</span></div>
+                <div class="price-item"><span class="name">Вафельная бумага</span><span class="price">80 ₽</span></div>
+                <div class="price-item"><span class="name">Безе</span><span class="price">39 ₽</span></div>
+                <div class="price-item"><span class="name">Леденцы</span><span class="price">25 ₽</span></div>
+                <div class="price-item"><span class="name">Шоколадные буквы/цифры (от 5 шт)</span><span class="price">20 ₽</span></div>
+                <div class="price-item"><span class="name">Красители</span><span class="price">2 ₽</span></div>
+                <div class="price-item"><span class="name">Банты (за штуку)</span><span class="price">10 ₽</span></div>
+            </div>
+            <div class="price-card">
+                <h3><i class="fas fa-cheese"></i> Крем чиз</h3>
+                <div class="price-item"><span class="name">Крем чиз (стандарт, от 700 гр)</span><span class="price">119 ₽</span></div>
+                <div class="price-item"><span class="name">Крем чиз на шоколаде (от 750 гр)</span><span class="price">150 ₽</span></div>
+            </div>
+            <div class="price-card">
+                <h3><i class="fas fa-box"></i> Упаковка и доставка</h3>
+                <div class="price-item"><span class="name">Стандарт</span><span class="price">120 ₽</span></div>
+                <div class="price-item"><span class="name">Бенто</span><span class="price">100 ₽</span></div>
+                <div class="price-item"><span class="name">Доставка по Починкам</span><span class="price">200 ₽</span></div>
+                <div class="price-note">Доставка по другим населенным пунктам зависит от расстояния</div>
             </div>
         </div>
     </section>
 
-    <!-- Секция 2 -->
-    <section style="background-color: #050505;">
-        <div class="container">
-            <div class="text-content" data-aos="fade-right">
-                <h1>Искренность в деталях</h1>
-                <p>Её улыбка способна растопить любой лед, а взгляд всегда говорит больше, чем тысячи слов. Валерия обладает редким даром — замечать прекрасное в мелочах и дарить тепло окружающим.</p>
-            </div>
-            <div class="photo-wrapper" data-aos="fade-left">
-                <img src="https://i.ibb.co/5hBV8sQf/photo-2025-09-08-23-27-28.jpg" alt="Валерия" class="main-photo">
-            </div>
+    <!-- МОДАЛЬНОЕ ОКНО ТОВАРА -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+            <img id="modalImage" src="" alt="Торт">
+            <div class="modal-category" id="modalCategory"></div>
+            <h2 id="modalTitle"></h2>
+            <p id="modalDescription"></p>
+            <div class="modal-price" id="modalPrice"></div>
+            <button class="btn-primary" style="width:100%;" id="modalAddToCart">В корзину</button>
         </div>
-    </section>
+    </div>
 
-    <!-- Секция 3: Музыкальная (Фото по центру) -->
-    <section>
-        <div class="music-grid">
-            <!-- Слева: Биография Глеба -->
-            <div class="text-content" data-aos="fade-right">
-                <h3>Биография</h3>
-                <h2>Глеб Викторов</h2>
-                <p>
-                    Основатель рок-группы «Три дня дождя». Глеб родился в Кызыле и прошел путь от битмейкера до одного из главных лиц современного альтернативного рока в СНГ. Его музыка — это глубокая лирика о чувствах, зависимостях и жизни.
-                </p>
+    <!-- МОДАЛЬНОЕ ОКНО КОРЗИНЫ -->
+    <div class="modal-overlay" id="cartOverlay">
+        <div class="modal cart-modal">
+            <button class="modal-close" id="cartClose"><i class="fas fa-times"></i></button>
+            <h2 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 1rem;">Корзина</h2>
+            <div class="cart-items" id="cartItemsContainer"></div>
+            <div class="cart-total" id="cartTotal">Итого: 0 ₽</div>
+
+            <!-- Декор -->
+            <div class="extras-section">
+                <h4>Добавить декор:</h4>
+                <div id="extrasContainer"></div>
             </div>
 
-            <!-- По центру: Фото -->
-            <div class="photo-wrapper photo-center" data-aos="zoom-in">
-                <img src="https://i.ibb.co/wrRQ27LJ/IMG-2738.jpg" alt="Валерия и музыка" class="main-photo">
+            <!-- Доставка -->
+            <div class="delivery-section">
+                <h4>Выберите способ доставки:</h4>
+                <div class="delivery-options" id="deliveryOptions">
+                    <label><input type="radio" name="delivery" value="pochinki"> Доставка по Починкам (200 ₽)</label>
+                    <label><input type="radio" name="delivery" value="notpochinki"> Не по Починкам (цена обговорится)</label>
+                    <label><input type="radio" name="delivery" value="self"> Самовывоз</label>
+                </div>
             </div>
 
-            <!-- Справа: Любимое -->
-            <div class="text-content music-info-box" data-aos="fade-left">
-                <h3>Музыкальный вкус</h3>
-                <h2 style="font-size: 2rem;">Три дня дождя</h2>
-                <p style="color: var(--text-main);">Любимый певец: <strong>Глеб Викторов</strong></p>
-                <p style="margin-top: 15px; color: var(--accent-pink);">Любимый проигрыш:</p>
-                <p style="font-style: italic;">ТДД — Не важно</p>
-            </div>
+            <button class="btn-primary" style="width:100%; margin-top:1.5rem;" id="checkoutBtn">Оформить заказ</button>
         </div>
-    </section>
+    </div>
 
-    <footer>
-        <div class="big-text" data-aos="zoom-in">outside owner</div>
-        <p style="letter-spacing: 10px; font-size: 0.6rem; opacity: 0.3; margin-top: 20px;">DESIGNED FOR THE BEST ONE</p>
+    <!-- ФУТЕР -->
+    <footer class="footer" id="footer">
+        <div>© 2026 outsidedev. Все права защищены.</div>
+        <div>Связь: <a href="https://t.me/Lera06241" target="_blank">Telegram @Lera06241</a></div>
     </footer>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 1000,
-            once: false,
-            mirror: true
-        });
+        (function() {
+            // Данные тортов
+            const cakes = [
+                { id: 1, title: 'Сникерс', category: 'chocolate', categoryLabel: 'Шоколадный', description: 'Шоколадный бисквит, арахис, карамель, сливочный крем.', price: '1400', priceNumber: 1400, image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop', badge: 'Хит' },
+                { id: 2, title: 'Карамельный банан', category: 'fruit', categoryLabel: 'Фруктовый', description: 'Нежный банановый бисквит с карамельной пропиткой и кремом.', price: '1400', priceNumber: 1400, image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop', badge: 'Популярный' },
+                { id: 3, title: 'Красный бархат', category: 'classic', categoryLabel: 'Классический', description: 'Красный бархат с крем-чиз, возможна начинка: малина, клубника, вишня.', price: '1350', priceNumber: 1350, image: 'https://images.unsplash.com/photo-1586788224331-947f68671cf1?w=600&auto=format&fit=crop', badge: 'Нежный' },
+                { id: 4, title: 'Малина', category: 'berry', categoryLabel: 'Ягодный', description: 'Воздушный бисквит с малиновым конфи и сливочным кремом.', price: '1200', priceNumber: 1200, image: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&auto=format&fit=crop', badge: 'Летний' },
+                { id: 5, title: 'Вишня в шоколаде', category: 'chocolate', categoryLabel: 'Шоколадный', description: 'Шоколадный бисквит, вишнёвая начинка, ганаш.', price: '1300', priceNumber: 1300, image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=600&auto=format&fit=crop', badge: 'Насыщенный' },
+                { id: 6, title: 'Шоколад банан', category: 'chocolate', categoryLabel: 'Шоколадный', description: 'Шоколадный бисквит, пропитка, крем-чиз, шоколадный ганаш, банан-карамель.', price: '1450', priceNumber: 1450, image: 'https://i.ibb.co/My25gqRj/r3c0s7-U8gqdad-QPw-Xd-WIO4-Q9-Ig-VPQj-LF9-UNEe-Zcx1bk4-Yc-Qa56-Uq-Ucr3-Iy-Jmhqus-VNtbf-F8h-H-Wl-CPo-e-VBVAa.jpg', badge: 'Гурман' },
+                { id: 7, title: 'Шоколадный Ферреро', category: 'classic', categoryLabel: 'Классический', description: 'Шоколадный бисквит, ореховое пралине, крем-чиз, ганаш.', price: '1500', priceNumber: 1500, image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=600&auto=format&fit=crop', badge: 'Премиум' }
+            ];
+
+            // Дополнительные опции: теперь только декор
+            const extras = [
+                { id: 'e10', category: 'Декор', name: 'Мастика', price: 150 },
+                { id: 'e11', category: 'Декор', name: 'Надпись', price: 14 },
+                { id: 'e12', category: 'Декор', name: 'Вафельная бумага', price: 80 },
+                { id: 'e13', category: 'Декор', name: 'Безе', price: 39 },
+                { id: 'e14', category: 'Декор', name: 'Леденцы', price: 25 },
+                { id: 'e15', category: 'Декор', name: 'Шоколадные буквы/цифры (от 5 шт)', price: 20 },
+                { id: 'e16', category: 'Декор', name: 'Красители', price: 2 },
+                { id: 'e17', category: 'Декор', name: 'Банты (за штуку)', price: 10 }
+            ];
+
+            // Варианты доставки
+            const deliveryOptions = {
+                pochinki: { name: 'Доставка по Починкам', price: 200 },
+                notpochinki: { name: 'Не по Починкам (цена обговорится)', price: 0 },
+                self: { name: 'Самовывоз', price: 0 }
+            };
+
+            // Корзина
+            let cart = JSON.parse(localStorage.getItem('bake_cart')) || [];
+            if (!Array.isArray(cart)) cart = [];
+
+            function saveCart() {
+                localStorage.setItem('bake_cart', JSON.stringify(cart));
+                updateCartBadge();
+            }
+
+            function updateCartBadge() {
+                const badge = document.getElementById('cartBadge');
+                const totalItems = cart.reduce((sum, item) => sum + (item.type === 'delivery' ? 0 : item.quantity), 0);
+                badge.style.display = totalItems > 0 ? 'flex' : 'none';
+                badge.textContent = totalItems;
+            }
+
+            function addToCart(cakeId) {
+                const cake = cakes.find(c => c.id == cakeId);
+                if (!cake) return;
+                const existing = cart.find(item => item.type === 'cake' && item.id == cakeId);
+                if (existing) existing.quantity += 1;
+                else cart.push({ type: 'cake', id: cake.id, name: cake.title, price: cake.priceNumber, quantity: 1 });
+                saveCart();
+                alert('Торт добавлен в корзину!');
+            }
+
+            function addExtraToCart(extraId) {
+                const extra = extras.find(e => e.id == extraId);
+                if (!extra) return;
+                const existing = cart.find(item => item.type === 'extra' && item.id == extraId);
+                if (existing) existing.quantity += 1;
+                else cart.push({ type: 'extra', id: extra.id, name: extra.name, price: extra.price, quantity: 1 });
+                saveCart();
+                renderCartModal();
+            }
+
+            function removeItemFromCart(itemKey) {
+                const [type, id] = itemKey.split('-');
+                cart = cart.filter(item => !(item.type === type && item.id == id));
+                saveCart();
+                renderCartModal();
+                // сбросить выбранную доставку, если удалили доставку
+                if (type === 'delivery') {
+                    document.querySelectorAll('input[name="delivery"]').forEach(radio => radio.checked = false);
+                }
+            }
+
+            function changeQuantity(itemKey, delta) {
+                const [type, id] = itemKey.split('-');
+                const item = cart.find(i => i.type === type && i.id == id);
+                if (item) {
+                    item.quantity += delta;
+                    if (item.quantity <= 0) cart = cart.filter(i => !(i.type === type && i.id == id));
+                    saveCart();
+                    renderCartModal();
+                }
+            }
+
+            function getCartTotal() {
+                return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            }
+
+            // Управление доставкой
+            function selectDelivery(deliveryId) {
+                // Удаляем все элементы доставки из корзины
+                cart = cart.filter(item => item.type !== 'delivery');
+                if (deliveryId && deliveryOptions[deliveryId]) {
+                    const option = deliveryOptions[deliveryId];
+                    cart.push({ type: 'delivery', id: 'delivery_' + deliveryId, name: option.name, price: option.price, quantity: 1 });
+                }
+                saveCart();
+                renderCartModal();
+            }
+
+            // Рендер каталога
+            const cakeGrid = document.getElementById('cakeGrid');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            let currentFilter = 'all';
+
+            function renderCakes(filter = 'all') {
+                const filtered = filter === 'all' ? cakes : cakes.filter(cake => cake.category === filter);
+                cakeGrid.innerHTML = '';
+                filtered.forEach(cake => {
+                    const card = document.createElement('div');
+                    card.className = 'cake-card';
+                    card.setAttribute('data-id', cake.id);
+                    card.innerHTML = `
+                        <div class="card-image-wrapper">
+                            <img src="${cake.image}" alt="${cake.title}" loading="lazy">
+                            <span class="card-badge">${cake.badge}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-category">${cake.categoryLabel}</div>
+                            <div class="card-title">${cake.title}</div>
+                            <div class="card-description">${cake.description}</div>
+                            <div class="card-footer">
+                                <div class="card-price">${cake.price} ₽ <span>/ кг</span></div>
+                                <button class="add-btn" data-id="${cake.id}" aria-label="Добавить"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    `;
+                    cakeGrid.appendChild(card);
+                });
+                document.querySelectorAll('.add-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        addToCart(parseInt(this.getAttribute('data-id')));
+                    });
+                });
+            }
+
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.getAttribute('data-filter');
+                    renderCakes(currentFilter);
+                });
+            });
+
+            // Модальное окно товара
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalClose = document.getElementById('modalClose');
+            const modalImage = document.getElementById('modalImage');
+            const modalCategory = document.getElementById('modalCategory');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalPrice = document.getElementById('modalPrice');
+            const modalAddToCart = document.getElementById('modalAddToCart');
+            let currentModalCakeId = null;
+
+            function openModal(cakeId) {
+                const cake = cakes.find(c => c.id == cakeId);
+                if (!cake) return;
+                currentModalCakeId = cake.id;
+                modalImage.src = cake.image;
+                modalCategory.textContent = cake.categoryLabel;
+                modalTitle.textContent = cake.title;
+                modalDescription.textContent = cake.description;
+                modalPrice.textContent = cake.price + ' ₽ / кг';
+                modalOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            cakeGrid.addEventListener('click', function(e) {
+                const card = e.target.closest('.cake-card');
+                if (!card) return;
+                if (e.target.closest('.add-btn')) return;
+                openModal(parseInt(card.getAttribute('data-id')));
+            });
+
+            modalClose.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) closeModal();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') { closeModal(); closeCart(); }
+            });
+            modalAddToCart.addEventListener('click', function() {
+                if (currentModalCakeId) { addToCart(currentModalCakeId); closeModal(); }
+            });
+
+            // Модальное окно корзины
+            const cartOverlay = document.getElementById('cartOverlay');
+            const cartClose = document.getElementById('cartClose');
+            const cartItemsContainer = document.getElementById('cartItemsContainer');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartIcon = document.getElementById('cartIcon');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const extrasContainer = document.getElementById('extrasContainer');
+            const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
+
+            function renderCartModal() {
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<div class="cart-empty">Корзина пуста</div>';
+                    cartTotal.textContent = 'Итого: 0 ₽';
+                } else {
+                    let html = '';
+                    cart.forEach(item => {
+                        const itemKey = item.type + '-' + item.id;
+                        html += `
+                            <div class="cart-item">
+                                <div class="item-name">${item.name}${item.type === 'delivery' ? '' : ` (${item.quantity} шт.)`}</div>
+                                <div class="item-price">${item.price * (item.type === 'delivery' ? 1 : item.quantity)} ₽</div>
+                                <div style="display:flex; gap:8px; align-items:center;">
+                                    ${item.type !== 'delivery' ? `
+                                        <button class="remove-item" onclick="changeQuantity('${itemKey}', -1)"><i class="fas fa-minus"></i></button>
+                                        <button class="remove-item" onclick="changeQuantity('${itemKey}', 1)"><i class="fas fa-plus"></i></button>
+                                    ` : ''}
+                                    <button class="remove-item" onclick="removeItemFromCart('${itemKey}')"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    cartItemsContainer.innerHTML = html;
+                    cartTotal.textContent = 'Итого: ' + getCartTotal() + ' ₽';
+                }
+                renderExtras();
+                // Обновить выбранную доставку на основе корзины
+                const deliveryItem = cart.find(item => item.type === 'delivery');
+                if (deliveryItem) {
+                    const deliveryId = deliveryItem.id.replace('delivery_', '');
+                    deliveryRadios.forEach(radio => {
+                        radio.checked = (radio.value === deliveryId);
+                    });
+                } else {
+                    deliveryRadios.forEach(radio => radio.checked = false);
+                }
+            }
+
+            function renderExtras() {
+                let extrasHtml = '';
+                extras.forEach(extra => {
+                    extrasHtml += `
+                        <div class="extra-item" style="margin-bottom:0.3rem;">
+                            <span class="extra-name">${extra.name}</span>
+                            <span class="extra-price">${extra.price} ₽</span>
+                            <button class="add-extra-btn" data-extra-id="${extra.id}"><i class="fas fa-plus"></i></button>
+                        </div>
+                    `;
+                });
+                extrasContainer.innerHTML = extrasHtml;
+                document.querySelectorAll('.add-extra-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        addExtraToCart(this.getAttribute('data-extra-id'));
+                    });
+                });
+            }
+
+            function openCart() {
+                renderCartModal();
+                cartOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            function closeCart() {
+                cartOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            cartIcon.addEventListener('click', openCart);
+            cartClose.addEventListener('click', closeCart);
+            cartOverlay.addEventListener('click', function(e) {
+                if (e.target === cartOverlay) closeCart();
+            });
+
+            // Обработчики для радио доставки
+            deliveryRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    selectDelivery(this.value);
+                });
+            });
+
+            window.removeItemFromCart = removeItemFromCart;
+            window.changeQuantity = changeQuantity;
+
+            // Оформление заказа
+            checkoutBtn.addEventListener('click', function() {
+                if (cart.length === 0) return;
+                let message = 'Здравствуйте! Хочу заказать:\n';
+                cart.forEach(item => {
+                    if (item.type === 'delivery') {
+                        message += `– Доставка: ${item.name}\n`;
+                    } else {
+                        message += `– ${item.name}, ${item.quantity} шт. (${item.price} ₽/шт) = ${item.price * item.quantity} ₽\n`;
+                    }
+                });
+                message += `\nОбщая стоимость: ${getCartTotal()} ₽\n`;
+                message += 'Пожалуйста, свяжитесь со мной для уточнения деталей.';
+                window.open(`https://t.me/Lera06241?text=${encodeURIComponent(message)}`, '_blank');
+            });
+
+            // Рабочие кнопки в шапке
+            document.querySelectorAll('.nav a[data-target]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById(this.getAttribute('data-target')).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+
+            // Инициализация
+            renderCakes('all');
+            updateCartBadge();
+        })();
     </script>
 </body>
 </html>
