@@ -461,8 +461,20 @@
             color: var(--accent);
             text-decoration: none;
             font-weight: 500;
+            margin-left: 1rem;
         }
         .footer a:hover { text-decoration: underline; }
+        .footer-contacts {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        .footer-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
 
         @media (max-width: 768px) {
             .header { padding: 1rem 1.2rem; flex-direction: column; align-items: flex-start; }
@@ -636,7 +648,11 @@
     <!-- ФУТЕР -->
     <footer class="footer" id="footer">
         <div>© 2026 outsidedev. Все права защищены.</div>
-        <div>Связь: <a href="https://t.me/Lera06241" target="_blank">Telegram @Lera06241</a></div>
+        <div class="footer-contacts">
+            <a href="https://t.me/BakeLab06241" target="_blank" class="footer-link"><i class="fab fa-telegram"></i> Канал</a>
+            <a href="https://vk.com/pyataeva_lerka000" target="_blank" class="footer-link"><i class="fab fa-vk"></i> ВКонтакте</a>
+            <a href="https://t.me/Lera06241" target="_blank" class="footer-link"><i class="fas fa-paper-plane"></i> Заказ</a>
+        </div>
     </footer>
 
     <script>
@@ -644,15 +660,15 @@
             // Данные тортов
             const cakes = [
                 { id: 1, title: 'Сникерс', category: 'chocolate', categoryLabel: 'Шоколадный', description: 'Шоколадный бисквит, арахис, карамель, сливочный крем.', price: '1400', priceNumber: 1400, image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop', badge: 'Хит' },
-                { id: 2, title: 'Карамельный банан', category: 'fruit', categoryLabel: 'Фруктовый', description: 'Нежный банановый бисквит с карамельной пропиткой и кремом.', price: '1400', priceNumber: 1400, image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop', badge: 'NEW' },
+                { id: 2, title: 'Карамельный банан', category: 'fruit', categoryLabel: 'Фруктовый', description: 'Нежный банановый бисквит с карамельной пропиткой и кремом.', price: '1400', priceNumber: 1400, image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop', badge: 'Популярный' },
                 { id: 3, title: 'Красный бархат', category: 'classic', categoryLabel: 'Классический', description: 'Красный бархат с крем-чиз, возможна начинка: малина, клубника, вишня.', price: '1350', priceNumber: 1350, image: 'https://images.unsplash.com/photo-1586788224331-947f68671cf1?w=600&auto=format&fit=crop', badge: 'Нежный' },
-                { id: 4, title: 'Малина', category: 'berry', categoryLabel: 'Ягодный', description: 'Воздушный бисквит с малиновым конфи и сливочным кремом.', price: '1200', priceNumber: 1200, image: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&auto=format&fit=crop', badge: 'NEW' },
-                { id: 5, title: 'Вишня в шоколаде', category: 'chocolate', categoryLabel: 'Шоколадный', description: 'Шоколадный бисквит, вишнёвая начинка, ганаш.', price: '1300', priceNumber: 1300, image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=600&auto=format&fit=crop', badge: 'NEW' },
-                { id: 6, title: 'Шоколад банан', category: 'chocolate', categoryLabel: 'Шоколадный', description: 'Шоколадный бисквит, пропитка, крем-чиз, шоколадный ганаш, банан-карамель.', price: '1450', priceNumber: 1450, image: 'https://i.ibb.co/My25gqRj/r3c0s7-U8gqdad-QPw-Xd-WIO4-Q9-Ig-VPQj-LF9-UNEe-Zcx1bk4-Yc-Qa56-Uq-Ucr3-Iy-Jmhqus-VNtbf-F8h-H-Wl-CPo-e-VBVAa.jpg', badge: 'NEW' },
-                { id: 7, title: 'Шоколадный Ферреро', category: 'classic', categoryLabel: 'Классический', description: 'Шоколадный бисквит, ореховое пралине, крем-чиз, ганаш.', price: '1500', priceNumber: 1500, image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=600&auto=format&fit=crop', badge: 'NEW' }
+                { id: 4, title: 'Малина', category: 'berry', categoryLabel: 'Ягодный', description: 'Воздушный бисквит с малиновым конфи и сливочным кремом.', price: '1200', priceNumber: 1200, image: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&auto=format&fit=crop', badge: 'Летний' },
+                { id: 5, title: 'Вишня в шоколаде', category: 'chocolate', categoryLabel: 'Шоколадный', description: 'Шоколадный бисквит, вишнёвая начинка, ганаш.', price: '1300', priceNumber: 1300, image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=600&auto=format&fit=crop', badge: 'Насыщенный' },
+                { id: 6, title: 'Шоколад банан', category: 'chocolate', categoryLabel: 'Шоколадный', description: 'Шоколадный бисквит, пропитка, крем-чиз, шоколадный ганаш, банан-карамель.', price: '1450', priceNumber: 1450, image: 'https://i.ibb.co/My25gqRj/r3c0s7-U8gqdad-QPw-Xd-WIO4-Q9-Ig-VPQj-LF9-UNEe-Zcx1bk4-Yc-Qa56-Uq-Ucr3-Iy-Jmhqus-VNtbf-F8h-H-Wl-CPo-e-VBVAa.jpg', badge: 'Гурман' },
+                { id: 7, title: 'Шоколадный Ферреро', category: 'classic', categoryLabel: 'Классический', description: 'Шоколадный бисквит, ореховое пралине, крем-чиз, ганаш.', price: '1500', priceNumber: 1500, image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=600&auto=format&fit=crop', badge: 'Премиум' }
             ];
 
-            // Дополнительные опции: теперь только декор
+            // Дополнительные опции: только декор
             const extras = [
                 { id: 'e10', category: 'Декор', name: 'Мастика', price: 150 },
                 { id: 'e11', category: 'Декор', name: 'Надпись', price: 14 },
@@ -712,7 +728,6 @@
                 cart = cart.filter(item => !(item.type === type && item.id == id));
                 saveCart();
                 renderCartModal();
-                // сбросить выбранную доставку, если удалили доставку
                 if (type === 'delivery') {
                     document.querySelectorAll('input[name="delivery"]').forEach(radio => radio.checked = false);
                 }
@@ -733,9 +748,7 @@
                 return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             }
 
-            // Управление доставкой
             function selectDelivery(deliveryId) {
-                // Удаляем все элементы доставки из корзины
                 cart = cart.filter(item => item.type !== 'delivery');
                 if (deliveryId && deliveryOptions[deliveryId]) {
                     const option = deliveryOptions[deliveryId];
@@ -874,7 +887,6 @@
                     cartTotal.textContent = 'Итого: ' + getCartTotal() + ' ₽';
                 }
                 renderExtras();
-                // Обновить выбранную доставку на основе корзины
                 const deliveryItem = cart.find(item => item.type === 'delivery');
                 if (deliveryItem) {
                     const deliveryId = deliveryItem.id.replace('delivery_', '');
@@ -921,7 +933,6 @@
                 if (e.target === cartOverlay) closeCart();
             });
 
-            // Обработчики для радио доставки
             deliveryRadios.forEach(radio => {
                 radio.addEventListener('change', function() {
                     selectDelivery(this.value);
@@ -931,7 +942,6 @@
             window.removeItemFromCart = removeItemFromCart;
             window.changeQuantity = changeQuantity;
 
-            // Оформление заказа
             checkoutBtn.addEventListener('click', function() {
                 if (cart.length === 0) return;
                 let message = 'Здравствуйте! Хочу заказать:\n';
@@ -947,7 +957,6 @@
                 window.open(`https://t.me/Lera06241?text=${encodeURIComponent(message)}`, '_blank');
             });
 
-            // Рабочие кнопки в шапке
             document.querySelectorAll('.nav a[data-target]').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -955,7 +964,6 @@
                 });
             });
 
-            // Инициализация
             renderCakes('all');
             updateCartBadge();
         })();
